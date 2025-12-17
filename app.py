@@ -1,8 +1,8 @@
-
 import streamlit as st
 from ultralytics import YOLO
 from PIL import Image
 import tempfile
+import numpy as np   
 
 st.title("Simple Garbage AI Scanner")
 
@@ -26,6 +26,8 @@ if uploaded_file:
         results = model(tmp.name, conf=0.25)
 
     result_img = results[0].plot()
+    result_img = result_img[:, :, ::-1]  
+
     st.image(result_img, caption="Hasil Deteksi", use_container_width=True)
 
     boxes = results[0].boxes
@@ -35,4 +37,3 @@ if uploaded_file:
             st.write("-", model.names[int(c)])
     else:
         st.write("Tidak ada sampah terdeteksi")
-    
